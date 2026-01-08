@@ -1,12 +1,12 @@
 @baseurl = http://localhost:3000
 
 ### Signup User
-POST {{baseurl}}/user
+POST {{baseurl}}/api/user
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john@example.com"
+  "name": "User2",
+  "email": "user2@example.com"
 }
 
 # Response file: ./user.response.http

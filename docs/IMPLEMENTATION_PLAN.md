@@ -28,7 +28,7 @@ faceboard-nest-scratch/
 │   └── schema.prisma
 │
 ├── src/
-│   ├── common/
+│   ├── common/                         # Shared utilities
 │   │   ├── decorators/
 │   │   │   ├── current-user.decorator.ts
 │   │   │   ├── public.decorator.ts
@@ -51,7 +51,7 @@ faceboard-nest-scratch/
 │   │   │   └── jwt.strategy.ts
 │   │   └── common.module.ts
 │   │
-│   ├── config/
+│   ├── config/                         # Centralized configuration
 │   │   ├── app.config.ts
 │   │   ├── auth.config.ts
 │   │   ├── database.config.ts
@@ -59,8 +59,8 @@ faceboard-nest-scratch/
 │   │   ├── swagger.config.ts
 │   │   └── index.ts
 │   │
-│   ├── modules/
-│   │   ├── auth/
+│   ├── core/                           # Infrastructure / Service modules
+│   │   ├── auth/                       # Authentication (no DB table)
 │   │   │   ├── dto/
 │   │   │   │   ├── login.dto.ts
 │   │   │   │   └── register.dto.ts
@@ -70,10 +70,23 @@ faceboard-nest-scratch/
 │   │   │   ├── auth.service.ts
 │   │   │   └── auth.module.ts
 │   │   │
-│   │   ├── health/
+│   │   ├── health/                     # Health checks (no DB table)
 │   │   │   ├── health.controller.ts
 │   │   │   └── health.module.ts
 │   │   │
+│   │   └── storage/                    # File storage (no DB table)
+│   │       ├── drivers/
+│   │       │   ├── local.driver.ts
+│   │       │   └── s3.driver.ts
+│   │       ├── dto/
+│   │       │   └── upload.dto.ts
+│   │       ├── responses/
+│   │       │   └── file.response.ts
+│   │       ├── storage.controller.ts
+│   │       ├── storage.service.ts
+│   │       └── storage.module.ts
+│   │
+│   ├── modules/                        # Entity / Domain modules (have DB tables)
 │   │   ├── post/
 │   │   │   ├── dto/
 │   │   │   │   ├── create-post.dto.ts
@@ -89,18 +102,6 @@ faceboard-nest-scratch/
 │   │   │   ├── role.service.ts
 │   │   │   └── role.module.ts
 │   │   │
-│   │   ├── storage/
-│   │   │   ├── drivers/
-│   │   │   │   ├── local.driver.ts
-│   │   │   │   └── s3.driver.ts
-│   │   │   ├── dto/
-│   │   │   │   └── upload.dto.ts
-│   │   │   ├── responses/
-│   │   │   │   └── file.response.ts
-│   │   │   ├── storage.controller.ts
-│   │   │   ├── storage.service.ts
-│   │   │   └── storage.module.ts
-│   │   │
 │   │   ├── user/
 │   │   │   ├── dto/
 │   │   │   │   ├── create-user.dto.ts
@@ -114,11 +115,11 @@ faceboard-nest-scratch/
 │   │   │
 │   │   └── index.ts
 │   │
-│   ├── prisma/
+│   ├── prisma/                         # Database layer
 │   │   ├── prisma.service.ts
 │   │   └── prisma.module.ts
 │   │
-│   ├── generated/
+│   ├── generated/                      # Prisma generated client
 │   │
 │   ├── app.controller.ts
 │   ├── app.service.ts
@@ -139,13 +140,25 @@ faceboard-nest-scratch/
 
 ---
 
+## Folder Organization
+
+| Folder         | Purpose                                                      | Examples                                           |
+| -------------- | ------------------------------------------------------------ | -------------------------------------------------- |
+| `src/common/`  | Shared utilities (decorators, guards, filters, interceptors) | `@Public()`, `JwtAuthGuard`, `HttpExceptionFilter` |
+| `src/config/`  | Centralized, type-safe configuration                         | `auth.config.ts`, `storage.config.ts`              |
+| `src/core/`    | Infrastructure services (NO database tables)                 | `auth/`, `health/`, `storage/`                     |
+| `src/modules/` | Entity/Domain modules (HAVE database tables)                 | `user/`, `post/`, `role/`                          |
+| `src/prisma/`  | Database connection layer                                    | `PrismaService`                                    |
+
+---
+
 ## Phase 1: Foundation & Configuration
 
 **Goal**: Set up centralized configuration and restructure existing code.
 
 ### Tasks
 
-- [ ] **1.1** Install dependencies
+- [x] **1.1** Install dependencies
 
   ```bash
   pnpm add class-validator class-transformer @nestjs/swagger swagger-ui-express
@@ -154,7 +167,7 @@ faceboard-nest-scratch/
   pnpm add -D @types/passport-jwt @types/bcrypt @faker-js/faker
   ```
 
-- [ ] **1.2** Create `src/config/` folder with configuration files
+- [x] **1.2** Create `src/config/` folder with configuration files
   - `app.config.ts` - App name, port, environment
   - `auth.config.ts` - JWT secret, access/refresh token expiry
   - `database.config.ts` - Database URL
@@ -162,16 +175,18 @@ faceboard-nest-scratch/
   - `swagger.config.ts` - Swagger title, description, version
   - `index.ts` - Barrel export
 
-- [ ] **1.3** Create `.env.example` with all environment variables
+- [x] **1.3** Create `.env.example` with all environment variables
 
-- [ ] **1.4** Update `main.ts` to enable:
+- [x] **1.4** Update `main.ts` to enable:
   - Global validation pipe
   - Helmet security headers
   - Compression
   - CORS
   - Swagger documentation
 
-- [ ] **1.5** Move existing modules to `src/modules/` folder
+- [x] **1.5** Restructure existing code:
+  - Create `src/core/` folder
+  - Create `src/modules/` folder
   - Move `src/user/` → `src/modules/user/`
   - Move `src/post/` → `src/modules/post/`
   - Update all imports
@@ -181,7 +196,7 @@ faceboard-nest-scratch/
 - Configuration system ready
 - Swagger docs at `/api/docs`
 - Security headers enabled
-- Existing modules restructured
+- New folder structure in place
 
 ---
 
@@ -257,7 +272,7 @@ faceboard-nest-scratch/
 - [ ] **3.4** Create `src/common/decorators/current-user.decorator.ts`
   - Extract current user from request
 
-- [ ] **3.5** Create `src/modules/auth/` module
+- [ ] **3.5** Create `src/core/auth/` module
   - `dto/login.dto.ts` - Email, password validation
   - `dto/register.dto.ts` - Email, password, name validation
   - `responses/auth.response.ts` - Token response mapping
@@ -426,24 +441,24 @@ faceboard-nest-scratch/
 
 - [ ] **7.2** Create `uploads/` directory with `.gitkeep`
 
-- [ ] **7.3** Create `src/modules/storage/drivers/local.driver.ts`
+- [ ] **7.3** Create `src/core/storage/drivers/local.driver.ts`
   - Save file to local disk
   - Generate public URL
 
-- [ ] **7.4** Create `src/modules/storage/drivers/s3.driver.ts`
+- [ ] **7.4** Create `src/core/storage/drivers/s3.driver.ts`
   - Upload to S3 bucket
   - Generate signed URL
 
-- [ ] **7.5** Create `src/modules/storage/storage.service.ts`
+- [ ] **7.5** Create `src/core/storage/storage.service.ts`
   - Driver abstraction (local or s3 based on config)
 
-- [ ] **7.6** Create `src/modules/storage/storage.controller.ts`
+- [ ] **7.6** Create `src/core/storage/storage.controller.ts`
   - POST /storage/upload (multipart)
   - DELETE /storage/:filename
 
-- [ ] **7.7** Create `src/modules/storage/dto/upload.dto.ts`
+- [ ] **7.7** Create `src/core/storage/dto/upload.dto.ts`
 
-- [ ] **7.8** Create `src/modules/storage/responses/file.response.ts`
+- [ ] **7.8** Create `src/core/storage/responses/file.response.ts`
 
 - [ ] **7.9** Configure static file serving for `/uploads/*`
 
@@ -470,11 +485,11 @@ faceboard-nest-scratch/
   pnpm add @nestjs/terminus
   ```
 
-- [ ] **8.2** Create `src/modules/health/health.controller.ts`
+- [ ] **8.2** Create `src/core/health/health.controller.ts`
   - GET /health - Basic health check
   - GET /health/db - Database connectivity check
 
-- [ ] **8.3** Create `src/modules/health/health.module.ts`
+- [ ] **8.3** Create `src/core/health/health.module.ts`
 
 - [ ] **8.4** Mark health routes as `@Public()`
 
@@ -583,21 +598,33 @@ faceboard-nest-scratch/
 
 ## Summary
 
-| Phase | Name                           | Estimated Tasks |
-| ----- | ------------------------------ | --------------- |
-| 1     | Foundation & Configuration     | 5 tasks         |
-| 2     | Common Module & Infrastructure | 8 tasks         |
-| 3     | Authentication Module          | 8 tasks         |
-| 4     | Roles & Permissions (RBAC)     | 8 tasks         |
-| 5     | User Module Enhancement        | 7 tasks         |
-| 6     | Post Module Enhancement        | 6 tasks         |
-| 7     | File Storage Module            | 10 tasks        |
-| 8     | Health Check Module            | 4 tasks         |
-| 9     | Database Seeding               | 7 tasks         |
-| 10    | Docker Configuration           | 4 tasks         |
-| 11    | Documentation & Cleanup        | 5 tasks         |
+| Phase | Name                           | Location                                  | Estimated Tasks |
+| ----- | ------------------------------ | ----------------------------------------- | --------------- |
+| 1     | Foundation & Configuration     | `src/config/`, restructure                | 5 tasks         |
+| 2     | Common Module & Infrastructure | `src/common/`                             | 8 tasks         |
+| 3     | Authentication Module          | `src/core/auth/`                          | 8 tasks         |
+| 4     | Roles & Permissions (RBAC)     | `src/modules/role/`, `src/common/guards/` | 8 tasks         |
+| 5     | User Module Enhancement        | `src/modules/user/`                       | 7 tasks         |
+| 6     | Post Module Enhancement        | `src/modules/post/`                       | 6 tasks         |
+| 7     | File Storage Module            | `src/core/storage/`                       | 10 tasks        |
+| 8     | Health Check Module            | `src/core/health/`                        | 4 tasks         |
+| 9     | Database Seeding               | `prisma/seed/`                            | 7 tasks         |
+| 10    | Docker Configuration           | Root                                      | 4 tasks         |
+| 11    | Documentation & Cleanup        | Root                                      | 5 tasks         |
 
 **Total: 11 Phases, 72 Tasks**
+
+---
+
+## Quick Reference: Where to Put Things
+
+| Question                               | Answer                    |
+| -------------------------------------- | ------------------------- |
+| New DB entity/table?                   | → `src/modules/<entity>/` |
+| New infrastructure service (no table)? | → `src/core/<service>/`   |
+| Shared decorator/guard/filter?         | → `src/common/`           |
+| Configuration?                         | → `src/config/`           |
+| Database seeding?                      | → `prisma/seed/`          |
 
 ---
 
@@ -610,4 +637,4 @@ faceboard-nest-scratch/
 
 ---
 
-**Ready to start Phase 1?**
+**Ready to start Phase 2?**
