@@ -1,6 +1,6 @@
 @baseurl = http://localhost:3000
 
-GET @baseurl
+GET {{baseurl}}
 Accept: application/json
 
 # Response file: ./test.http

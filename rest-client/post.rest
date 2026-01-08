@@ -1,0 +1,43 @@
+@baseurl = http://localhost:3000
+
+### Get Post by ID
+GET {{baseurl}}/post/1
+Accept: application/json
+
+# Response file: ./post.response.http
+
+### Get Feed (Published Posts)
+GET {{baseurl}}/feed
+Accept: application/json
+
+# Response file: ./post.response.http
+
+### Filter Posts
+GET {{baseurl}}/filtered-posts/Hello
+Accept: application/json
+
+# Response file: ./post.response.http
+
+### Create Draft Post
+POST {{baseurl}}/post
+Content-Type: application/json
+
+{
+  "title": "Hello World",
+  "content": "This is a test post.",
+  "authorEmail": "john@example.com"
+}
+
+# Response file: ./post.response.http
+
+### Publish Post
+PUT {{baseurl}}/publish/1
+Accept: application/json
+
+# Response file: ./post.response.http
+
+### Delete Post
+DELETE {{baseurl}}/post/1
+Accept: application/json
+
+# Response file: ./post.response.http

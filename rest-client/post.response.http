@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 120
+Date: Thu, 08 Jan 2026 05:05:00 GMT
+Connection: close
+
+{
+  "id": 1,
+  "title": "Hello World",
+  "content": "This is a test post.",
+  "published": false,
+  "authorId": 1
+}
