@@ -302,7 +302,7 @@ faceboard-nest-scratch/
 
 ### Tasks
 
-- [ ] **4.1** Update Prisma schema for RBAC
+- [x] **4.1** Update Prisma schema for RBAC
 
   ```prisma
   model Role {
@@ -335,23 +335,23 @@ faceboard-nest-scratch/
   }
   ```
 
-- [ ] **4.2** Run Prisma migration
+- [x] **4.2** Run Prisma migration
 
-- [ ] **4.3** Create `src/common/decorators/roles.decorator.ts`
+- [x] **4.3** Create `src/common/decorators/roles.decorator.ts`
   - `@Roles('admin', 'user')`
 
-- [ ] **4.4** Create `src/common/decorators/permissions.decorator.ts`
+- [x] **4.4** Create `src/common/decorators/permissions.decorator.ts`
   - `@Permissions('user:read', 'user:write')`
 
-- [ ] **4.5** Create `src/common/guards/roles.guard.ts`
+- [x] **4.5** Create `src/common/guards/roles.guard.ts`
 
-- [ ] **4.6** Create `src/common/guards/permissions.guard.ts`
+- [x] **4.6** Create `src/common/guards/permissions.guard.ts`
 
-- [ ] **4.7** Create `src/modules/role/` module
+- [x] **4.7** Create `src/modules/role/` module
   - `role.service.ts` - CRUD for roles/permissions
   - `role.module.ts`
 
-- [ ] **4.8** Update JWT strategy to include user roles/permissions
+- [x] **4.8** Update JWT strategy to include user roles/permissions
 
 ### Deliverables
 
