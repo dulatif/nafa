@@ -548,17 +548,17 @@ faceboard-nest-scratch/
 
 ### Tasks
 
-- [ ] **10.1** Create `Dockerfile`
+- [x] **10.1** Create `Dockerfile`
   - Multi-stage build
   - Production-optimized
 
-- [ ] **10.2** Create `docker-compose.yml`
+- [x] **10.2** Create `docker-compose.yml`
   - App service
   - Database service (if needed)
 
-- [ ] **10.3** Create `.dockerignore`
+- [x] **10.3** Create `.dockerignore`
 
-- [ ] **10.4** Update `README.md` with Docker instructions
+- [x] **10.4** Update `README.md` with Docker instructions
 
 ### Deliverables
 
