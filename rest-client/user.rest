@@ -1,12 +1,41 @@
-@baseurl = http://localhost:3000
+@baseUrl = http://localhost:3000/api
+@contentType = application/json
+@accessToken = YOUR_ACCESS_TOKEN_HERE
 
-### Signup User
-POST {{baseurl}}/api/user
-Content-Type: application/json
+### Get all users (admin only, paginated)
+GET {{baseUrl}}/users?page=1&limit=10
+Authorization: Bearer {{accessToken}}
+
+### Search users
+GET {{baseUrl}}/users?search=john
+Authorization: Bearer {{accessToken}}
+
+### Get current user profile
+GET {{baseUrl}}/users/me
+Authorization: Bearer {{accessToken}}
+
+### Get user by ID
+GET {{baseUrl}}/users/1
+Authorization: Bearer {{accessToken}}
+
+### Update user
+PUT {{baseUrl}}/users/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
 {
-  "name": "User4",
-  "email": "user4@example.com"
+  "name": "Updated Name"
 }
 
-# Response file: ./user.response.http
+### Update user password
+PUT {{baseUrl}}/users/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+  "password": "newpassword123"
+}
+
+### Delete user (admin only)
+DELETE {{baseUrl}}/users/1
+Authorization: Bearer {{accessToken}}

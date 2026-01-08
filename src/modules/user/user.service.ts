@@ -37,6 +37,10 @@ export class UsersService {
     });
   }
 
+  async count(where?: Prisma.UserWhereInput): Promise<number> {
+    return this.prisma.user.count({ where });
+  }
+
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     try {
       return await this.prisma.user.create({

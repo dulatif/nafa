@@ -367,28 +367,28 @@ faceboard-nest-scratch/
 
 ### Tasks
 
-- [ ] **5.1** Create `src/modules/user/dto/create-user.dto.ts`
+- [x] **5.1** Create `src/modules/user/dto/create-user.dto.ts`
   - Validation for email, password, name
 
-- [ ] **5.2** Create `src/modules/user/dto/update-user.dto.ts`
+- [x] **5.2** Create `src/modules/user/dto/update-user.dto.ts`
   - Partial update validation
 
-- [ ] **5.3** Create `src/modules/user/responses/user.response.ts`
+- [x] **5.3** Create `src/modules/user/responses/user.response.ts`
   - Exclude password, format dates
 
-- [ ] **5.4** Create `src/modules/user/responses/user-list.response.ts`
+- [x] **5.4** Create `src/modules/user/responses/user-list.response.ts`
   - Paginated user list with metadata
 
-- [ ] **5.5** Update `src/modules/user/user.controller.ts`
+- [x] **5.5** Update `src/modules/user/user.controller.ts`
   - GET /users (admin only, paginated)
   - GET /users/:id
   - GET /users/me (current user profile)
   - PUT /users/:id
   - DELETE /users/:id
 
-- [ ] **5.6** Apply response transformation in controller
+- [x] **5.6** Apply response transformation in controller
 
-- [ ] **5.7** Update `rest-client/user.rest`
+- [x] **5.7** Update `rest-client/user.rest`
 
 ### Deliverables
 
