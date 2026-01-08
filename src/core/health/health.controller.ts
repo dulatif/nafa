@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import * as path from 'path';
 import {
   HealthCheck,
   HealthCheckService,
@@ -29,7 +30,10 @@ export class HealthController {
       () => this.db.isHealthy('database'),
       // Check disk storage (threshold 90% full)
       () =>
-        this.disk.checkStorage('storage', { path: '/', thresholdPercent: 0.9 }),
+        this.disk.checkStorage('storage', {
+          path: path.parse(process.cwd()).root,
+          thresholdPercent: 0.9,
+        }),
     ]);
   }
 }
