@@ -4,3 +4,7 @@ GET {{baseurl}}
 Accept: application/json
 
 # Response file: ./test.http
+
+###
+GET {{baseurl}}/api/health
+Accept: application/json

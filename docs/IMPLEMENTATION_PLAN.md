@@ -506,28 +506,28 @@ faceboard-nest-scratch/
 
 ### Tasks
 
-- [ ] **9.1** Create `prisma/seed/factories/user.factory.ts`
+- [x] **9.1** Create `prisma/seed/factories/user.factory.ts`
   - Generate fake users with Faker.js
 
-- [ ] **9.2** Create `prisma/seed/factories/post.factory.ts`
+- [x] **9.2** Create `prisma/seed/factories/post.factory.ts`
   - Generate fake posts with Faker.js
 
-- [ ] **9.3** Create `prisma/seed/seeders/role.seeder.ts`
+- [x] **9.3** Create `prisma/seed/seeders/role.seeder.ts`
   - Seed default roles: admin, user
   - Seed default permissions
 
-- [ ] **9.4** Create `prisma/seed/seeders/user.seeder.ts`
+- [x] **9.4** Create `prisma/seed/seeders/user.seeder.ts`
   - Seed admin user
   - Seed sample users using factory
 
-- [ ] **9.5** Create `prisma/seed/seeders/post.seeder.ts`
+- [x] **9.5** Create `prisma/seed/seeders/post.seeder.ts`
   - Seed sample posts using factory
 
-- [ ] **9.6** Create `prisma/seed/seed.ts`
+- [x] **9.6** Create `prisma/seed/seed.ts`
   - Main seeder entry point
   - Run all seeders in order
 
-- [ ] **9.7** Update `package.json` with seed script
+- [x] **9.7** Update `package.json` with seed script
   ```json
   "prisma": {
     "seed": "ts-node prisma/seed/seed.ts"
