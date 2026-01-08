@@ -13,7 +13,7 @@ This document outlines the phased implementation of a production-ready NestJS st
 ## Directory Structure (Target)
 
 ```
-faceboard-nest-scratch/
+project-name/
 ├── prisma/
 │   ├── migrations/
 │   ├── seed/

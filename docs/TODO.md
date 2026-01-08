@@ -1,0 +1,2 @@
+- [] implement type checking in ci pipeline
+- [] implement commit lint
