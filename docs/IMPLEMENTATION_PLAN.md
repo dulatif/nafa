@@ -206,34 +206,34 @@ faceboard-nest-scratch/
 
 ### Tasks
 
-- [ ] **2.1** Create `src/common/filters/http-exception.filter.ts`
+- [x] **2.1** Create `src/common/filters/http-exception.filter.ts`
   - Standardized error response format
   - ```json
     { "status": 400, "message": "Validation failed", "errors": [...] }
     ```
 
-- [ ] **2.2** Create `src/common/interceptors/response.interceptor.ts`
+- [x] **2.2** Create `src/common/interceptors/response.interceptor.ts`
   - Wrap all responses in standard envelope
   - ```json
     { "status": 200, "message": "Success", "data": {...} }
     ```
 
-- [ ] **2.3** Create `src/common/interceptors/logging.interceptor.ts`
+- [x] **2.3** Create `src/common/interceptors/logging.interceptor.ts`
   - Log request method, URL, duration
 
-- [ ] **2.4** Create `src/common/dto/pagination.dto.ts`
+- [x] **2.4** Create `src/common/dto/pagination.dto.ts`
   - `page`, `limit`, `sortBy`, `sortOrder` query params
 
-- [ ] **2.5** Create `src/common/helpers/pagination.helper.ts`
+- [x] **2.5** Create `src/common/helpers/pagination.helper.ts`
   - Prisma pagination helper function
 
-- [ ] **2.6** Create `src/common/decorators/public.decorator.ts`
+- [x] **2.6** Create `src/common/decorators/public.decorator.ts`
   - Mark routes as public (skip auth)
 
-- [ ] **2.7** Create `src/common/common.module.ts`
+- [x] **2.7** Create `src/common/common.module.ts`
   - Export all common utilities
 
-- [ ] **2.8** Register global filters and interceptors in `main.ts`
+- [x] **2.8** Register global filters and interceptors in `main.ts`
 
 ### Deliverables
 
