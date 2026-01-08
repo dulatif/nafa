@@ -5,8 +5,8 @@ POST {{baseurl}}/api/user
 Content-Type: application/json
 
 {
-  "name": "User2",
-  "email": "user2@example.com"
+  "name": "User4",
+  "email": "user4@example.com"
 }
 
 # Response file: ./user.response.http
