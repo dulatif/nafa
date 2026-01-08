@@ -56,3 +56,14 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 /generated/prisma
+
+# Database
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+
+# Uploads
+/uploads/*
+!/uploads/.gitkeep
+
