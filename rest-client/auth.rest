@@ -1,0 +1,29 @@
+@baseUrl = http://localhost:3000/api
+@contentType = application/json
+
+### Register a new user
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "email": "user@example.com",
+  "password": "password123",
+  "name": "John Doe"
+}
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+
+### Logout (requires authentication)
+# Copy the accessToken from login response
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImlhdCI6MTc2Nzg1ODI0MywiZXhwIjoxNzY3ODU5MTQzfQ.FXZMRFBBuwHF2givxm6xldMCgwg6HfTI49QdDEqr7ak
+
+POST {{baseUrl}}/auth/logout
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}

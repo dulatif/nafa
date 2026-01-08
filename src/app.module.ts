@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 // Configuration
 import {
@@ -13,10 +14,14 @@ import {
 
 // Core modules
 import { PrismaModule } from '@/prisma/prisma.module';
+import { AuthModule } from '@/core/auth/auth.module';
 
 // Feature modules
 import { UserModule } from '@/modules/user/user.module';
 import { PostModule } from '@/modules/post/post.module';
+
+// Guards
+import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard';
 
 // App
 import { AppController } from './app.controller';
@@ -47,11 +52,21 @@ import { AppService } from './app.service';
     // Database
     PrismaModule,
 
+    // Core modules
+    AuthModule,
+
     // Feature modules
     UserModule,
     PostModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // Apply JwtAuthGuard globally
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

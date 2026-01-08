@@ -250,7 +250,7 @@ faceboard-nest-scratch/
 
 ### Tasks
 
-- [ ] **3.1** Update Prisma schema for User (add password field)
+- [x] **3.1** Update Prisma schema for User (add password field)
 
   ```prisma
   model User {
@@ -263,16 +263,16 @@ faceboard-nest-scratch/
   }
   ```
 
-- [ ] **3.2** Create `src/common/strategies/jwt.strategy.ts`
+- [x] **3.2** Create `src/common/strategies/jwt.strategy.ts`
   - Passport JWT strategy
 
-- [ ] **3.3** Create `src/common/guards/jwt-auth.guard.ts`
+- [x] **3.3** Create `src/common/guards/jwt-auth.guard.ts`
   - Protect routes requiring authentication
 
-- [ ] **3.4** Create `src/common/decorators/current-user.decorator.ts`
+- [x] **3.4** Create `src/common/decorators/current-user.decorator.ts`
   - Extract current user from request
 
-- [ ] **3.5** Create `src/core/auth/` module
+- [x] **3.5** Create `src/core/auth/` module
   - `dto/login.dto.ts` - Email, password validation
   - `dto/register.dto.ts` - Email, password, name validation
   - `responses/auth.response.ts` - Token response mapping
@@ -280,12 +280,12 @@ faceboard-nest-scratch/
   - `auth.controller.ts` - POST /auth/login, POST /auth/register
   - `auth.module.ts`
 
-- [ ] **3.6** Update `src/modules/user/user.service.ts`
+- [x] **3.6** Update `src/modules/user/user.service.ts`
   - Add `findByEmail()` method
 
-- [ ] **3.7** Apply `JwtAuthGuard` globally with `@Public()` exceptions
+- [x] **3.7** Apply `JwtAuthGuard` globally with `@Public()` exceptions
 
-- [ ] **3.8** Create `rest-client/auth.rest` for testing
+- [x] **3.8** Create `rest-client/auth.rest` for testing
 
 ### Deliverables
 
