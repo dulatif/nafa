@@ -431,7 +431,7 @@ faceboard-nest-scratch/
 
 ### Tasks
 
-- [ ] **7.1** Install additional dependencies
+- [x] **7.1** Install additional dependencies
 
   ```bash
   pnpm add @nestjs/platform-express multer
@@ -439,30 +439,30 @@ faceboard-nest-scratch/
   pnpm add -D @types/multer
   ```
 
-- [ ] **7.2** Create `uploads/` directory with `.gitkeep`
+- [x] **7.2** Create `uploads/` directory with `.gitkeep`
 
-- [ ] **7.3** Create `src/core/storage/drivers/local.driver.ts`
+- [x] **7.3** Create `src/core/storage/drivers/local.driver.ts`
   - Save file to local disk
   - Generate public URL
 
-- [ ] **7.4** Create `src/core/storage/drivers/s3.driver.ts`
+- [x] **7.4** Create `src/core/storage/drivers/s3.driver.ts`
   - Upload to S3 bucket
   - Generate signed URL
 
-- [ ] **7.5** Create `src/core/storage/storage.service.ts`
+- [x] **7.5** Create `src/core/storage/storage.service.ts`
   - Driver abstraction (local or s3 based on config)
 
-- [ ] **7.6** Create `src/core/storage/storage.controller.ts`
+- [x] **7.6** Create `src/core/storage/storage.controller.ts`
   - POST /storage/upload (multipart)
   - DELETE /storage/:filename
 
-- [ ] **7.7** Create `src/core/storage/dto/upload.dto.ts`
+- [x] **7.7** Create `src/core/storage/dto/upload.dto.ts`
 
-- [ ] **7.8** Create `src/core/storage/responses/file.response.ts`
+- [x] **7.8** Create `src/core/storage/responses/file.response.ts`
 
-- [ ] **7.9** Configure static file serving for `/uploads/*`
+- [x] **7.9** Configure static file serving for `/uploads/*`
 
-- [ ] **7.10** Create `rest-client/storage.rest`
+- [x] **7.10** Create `rest-client/storage.rest`
 
 ### Deliverables
 

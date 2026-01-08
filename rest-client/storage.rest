@@ -1,0 +1,21 @@
+@baseUrl = http://localhost:3000/api
+@contentType = multipart/form-data
+@accessToken = YOUR_ACCESS_TOKEN_HERE
+
+### Upload a file
+# Use a tool like Postman for file uploads or extensions that support multipart
+# This is just a template
+POST {{baseUrl}}/storage/upload
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+----WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.txt"
+Content-Type: text/plain
+
+This is a test file content.
+----WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Delete a file
+DELETE {{baseUrl}}/storage/1700000000000-test.txt
+Authorization: Bearer {{accessToken}}

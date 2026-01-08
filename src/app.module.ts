@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 // Configuration
 import {
@@ -15,6 +17,7 @@ import {
 // Core modules
 import { PrismaModule } from '@/prisma/prisma.module';
 import { AuthModule } from '@/core/auth/auth.module';
+import { StorageModule } from '@/core/storage/storage.module';
 
 // Feature modules
 import { UserModule } from '@/modules/user/user.module';
@@ -41,6 +44,12 @@ import { AppService } from './app.service';
       ],
     }),
 
+    // Static file serving for uploads
+    ServeStaticModule.forRoot({
+      rootPath: path.join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads',
+    }),
+
     // Rate limiting
     ThrottlerModule.forRoot([
       {
@@ -54,6 +63,7 @@ import { AppService } from './app.service';
 
     // Core modules
     AuthModule,
+    StorageModule,
 
     // Feature modules
     UserModule,
