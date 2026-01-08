@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/serve-static": "^5.0.4",
     "@nestjs/swagger": "^11.2.4",
+    "@nestjs/terminus": "^11.0.0",
     "@nestjs/throttler": "^6.5.0",
     "@prisma/adapter-libsql": "^7.2.0",
     "@prisma/client": "^7.2.0",

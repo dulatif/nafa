@@ -479,19 +479,19 @@ faceboard-nest-scratch/
 
 ### Tasks
 
-- [ ] **8.1** Install dependencies
+- [x] **8.1** Install dependencies
 
   ```bash
   pnpm add @nestjs/terminus
   ```
 
-- [ ] **8.2** Create `src/core/health/health.controller.ts`
+- [x] **8.2** Create `src/core/health/health.controller.ts`
   - GET /health - Basic health check
   - GET /health/db - Database connectivity check
 
-- [ ] **8.3** Create `src/core/health/health.module.ts`
+- [x] **8.3** Create `src/core/health/health.module.ts`
 
-- [ ] **8.4** Mark health routes as `@Public()`
+- [x] **8.4** Mark health routes as `@Public()`
 
 ### Deliverables
 

@@ -18,6 +18,7 @@ import {
 import { PrismaModule } from '@/prisma/prisma.module';
 import { AuthModule } from '@/core/auth/auth.module';
 import { StorageModule } from '@/core/storage/storage.module';
+import { HealthModule } from '@/core/health/health.module';
 
 // Feature modules
 import { UserModule } from '@/modules/user/user.module';
@@ -64,6 +65,7 @@ import { AppService } from './app.service';
     // Core modules
     AuthModule,
     StorageModule,
+    HealthModule,
 
     // Feature modules
     UserModule,
