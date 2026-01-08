@@ -573,20 +573,20 @@ faceboard-nest-scratch/
 
 ### Tasks
 
-- [ ] **11.1** Update `README.md`
+- [x] **11.1** Update `README.md`
   - Project overview
   - Quick start guide
   - Environment variables
   - API documentation link
   - Folder structure explanation
 
-- [ ] **11.2** Add inline code comments where needed
+- [x] **11.2** Add inline code comments where needed
 
-- [ ] **11.3** Verify all REST client files work
+- [x] **11.3** Verify all REST client files work
 
-- [ ] **11.4** Run linting and fix issues
+- [x] **11.4** Run linting and fix issues
 
-- [ ] **11.5** Final testing of all endpoints
+- [x] **11.5** Final testing of all endpoints
 
 ### Deliverables
 
