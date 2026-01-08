@@ -404,19 +404,19 @@ faceboard-nest-scratch/
 
 ### Tasks
 
-- [ ] **6.1** Create `src/modules/post/dto/create-post.dto.ts`
+- [x] **6.1** Create `src/modules/post/dto/create-post.dto.ts`
 
-- [ ] **6.2** Create `src/modules/post/dto/update-post.dto.ts`
+- [x] **6.2** Create `src/modules/post/dto/update-post.dto.ts`
 
-- [ ] **6.3** Create `src/modules/post/responses/post.response.ts`
+- [x] **6.3** Create `src/modules/post/responses/post.response.ts`
 
-- [ ] **6.4** Create `src/modules/post/responses/post-list.response.ts`
+- [x] **6.4** Create `src/modules/post/responses/post-list.response.ts`
 
-- [ ] **6.5** Update `src/modules/post/post.controller.ts`
+- [x] **6.5** Update `src/modules/post/post.controller.ts`
   - Apply pagination, DTOs, response mapping
   - Protect create/update/delete routes
 
-- [ ] **6.6** Update `rest-client/post.rest`
+- [x] **6.6** Update `rest-client/post.rest`
 
 ### Deliverables
 

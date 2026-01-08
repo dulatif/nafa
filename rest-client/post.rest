@@ -1,43 +1,45 @@
-@baseurl = http://localhost:3000
+@baseUrl = http://localhost:3000/api
+@contentType = application/json
+@accessToken = YOUR_ACCESS_TOKEN_HERE
 
-### Get Post by ID
-GET {{baseurl}}/post/1
-Accept: application/json
+### Get all published posts (public, paginated)
+GET {{baseUrl}}/posts?page=1&limit=10
 
-# Response file: ./post.response.http
+### Search published posts
+GET {{baseUrl}}/posts?search=hello
 
-### Get Feed (Published Posts)
-GET {{baseurl}}/feed
-Accept: application/json
+### Get my posts (authenticated)
+GET {{baseUrl}}/posts/my
+Authorization: Bearer {{accessToken}}
 
-# Response file: ./post.response.http
+### Get post by ID (public for published)
+GET {{baseUrl}}/posts/1
 
-### Filter Posts
-GET {{baseurl}}/filtered-posts/Hello
-Accept: application/json
-
-# Response file: ./post.response.http
-
-### Create Draft Post
-POST {{baseurl}}/post
-Content-Type: application/json
+### Create a new post
+POST {{baseUrl}}/posts
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
 {
-  "title": "Hello World",
-  "content": "This is a test post.",
-  "authorEmail": "john@example.com"
+  "title": "My New Post",
+  "content": "This is the content of my post...",
+  "published": false
 }
 
-# Response file: ./post.response.http
+### Update a post
+PUT {{baseUrl}}/posts/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
-### Publish Post
-PUT {{baseurl}}/publish/1
-Accept: application/json
+{
+  "title": "Updated Title",
+  "content": "Updated content..."
+}
 
-# Response file: ./post.response.http
+### Publish a post
+PUT {{baseUrl}}/posts/1/publish
+Authorization: Bearer {{accessToken}}
 
-### Delete Post
-DELETE {{baseurl}}/post/1
-Accept: application/json
-
-# Response file: ./post.response.http
+### Delete a post
+DELETE {{baseUrl}}/posts/1
+Authorization: Bearer {{accessToken}}

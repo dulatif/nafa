@@ -1,73 +1,239 @@
 import {
-  Controller,
-  Get,
-  Param,
-  Post,
   Body,
-  Put,
+  Controller,
   Delete,
+  ForbiddenException,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PostsService } from './post.service';
-import { Post as PostModel } from '@/generated/prisma/client';
+import { CreatePostDto, UpdatePostDto } from './dto';
+import { PostResponse } from './responses';
+import { PaginationDto } from '@/common/dto/pagination.dto';
+import {
+  createPaginator,
+  paginate,
+  PaginatedResult,
+} from '@/common/helpers/pagination.helper';
+import {
+  CurrentUser,
+  CurrentUserPayload,
+} from '@/common/decorators/current-user.decorator';
+import { Public } from '@/common/decorators/public.decorator';
 
-@Controller()
+@ApiTags('Posts')
+@ApiBearerAuth()
+@Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostsService) {}
 
-  @Get('post/:id')
-  async getPostById(@Param('id') id: string): Promise<PostModel> {
-    return this.postService.post({ id: Number(id) });
+  // # List Posts (Public - only published)
+
+  @Public()
+  @Get()
+  @ApiOperation({ summary: 'Get all published posts (public)' })
+  @ApiResponse({ status: 200, description: 'Paginated list of posts' })
+  async getPosts(
+    @Query() paginationDto: PaginationDto,
+  ): Promise<PaginatedResult<PostResponse>> {
+    const paginator = createPaginator();
+    const { skip, take, page, limit } = paginator(paginationDto);
+
+    const where = {
+      published: true,
+      ...(paginationDto.search
+        ? {
+            OR: [
+              { title: { contains: paginationDto.search } },
+              { content: { contains: paginationDto.search } },
+            ],
+          }
+        : {}),
+    };
+
+    const [posts, total] = await Promise.all([
+      this.postService.posts({
+        skip,
+        take,
+        where,
+        orderBy: paginationDto.sortBy
+          ? { [paginationDto.sortBy]: paginationDto.sortOrder }
+          : { id: 'desc' },
+      }),
+      this.postService.count(where),
+    ]);
+
+    const postResponses = posts.map((post) => PostResponse.fromEntity(post));
+
+    return paginate(postResponses, total, { page, limit });
   }
 
-  @Get('feed')
-  async getPublishedPosts(): Promise<PostModel[]> {
-    return this.postService.posts({
-      where: { published: true },
-    });
+  // # Get My Posts (Authenticated)
+
+  @Get('my')
+  @ApiOperation({ summary: 'Get current user posts' })
+  @ApiResponse({ status: 200, description: 'Paginated list of user posts' })
+  async getMyPosts(
+    @Query() paginationDto: PaginationDto,
+    @CurrentUser() currentUser: CurrentUserPayload,
+  ): Promise<PaginatedResult<PostResponse>> {
+    const paginator = createPaginator();
+    const { skip, take, page, limit } = paginator(paginationDto);
+
+    const where = { authorId: currentUser.id };
+
+    const [posts, total] = await Promise.all([
+      this.postService.posts({
+        skip,
+        take,
+        where,
+        orderBy: { id: 'desc' },
+      }),
+      this.postService.count(where),
+    ]);
+
+    const postResponses = posts.map((post) => PostResponse.fromEntity(post));
+
+    return paginate(postResponses, total, { page, limit });
   }
 
-  @Get('filtered-posts/:searchString')
-  async getFilteredPosts(
-    @Param('searchString') searchString: string,
-  ): Promise<PostModel[]> {
-    return this.postService.posts({
-      where: {
-        OR: [
-          {
-            title: { contains: searchString },
-          },
-          {
-            content: { contains: searchString },
-          },
-        ],
-      },
-    });
+  // # Get Post by ID (Public for published, owner for drafts)
+
+  @Public()
+  @Get(':id')
+  @ApiOperation({ summary: 'Get post by ID' })
+  @ApiResponse({ status: 200, type: PostResponse })
+  @ApiResponse({ status: 404, description: 'Post not found' })
+  async getPost(@Param('id', ParseIntPipe) id: number): Promise<PostResponse> {
+    const post = await this.postService.post({ id });
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    // Only show published posts publicly
+    if (!post.published) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return PostResponse.fromEntity(post);
   }
 
-  @Post('post')
-  async createDraft(
-    @Body() postData: { title: string; content?: string; authorEmail: string },
-  ): Promise<PostModel> {
-    const { title, content, authorEmail } = postData;
-    return this.postService.createPost({
-      title,
-      content,
+  // # Create Post (Authenticated)
+
+  @Post()
+  @ApiOperation({ summary: 'Create a new post' })
+  @ApiResponse({ status: 201, type: PostResponse })
+  async createPost(
+    @Body() createPostDto: CreatePostDto,
+    @CurrentUser() currentUser: CurrentUserPayload,
+  ): Promise<PostResponse> {
+    const post = await this.postService.createPost({
+      ...createPostDto,
       author: {
-        connect: { email: authorEmail },
+        connect: { id: currentUser.id },
       },
     });
+
+    return PostResponse.fromEntity(post);
   }
 
-  @Put('publish/:id')
-  async publishPost(@Param('id') id: string): Promise<PostModel> {
-    return this.postService.updatePost({
-      where: { id: Number(id) },
+  // # Update Post (Owner only)
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a post' })
+  @ApiResponse({ status: 200, type: PostResponse })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 404, description: 'Post not found' })
+  async updatePost(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePostDto: UpdatePostDto,
+    @CurrentUser() currentUser: CurrentUserPayload,
+  ): Promise<PostResponse> {
+    const existingPost = await this.postService.post({ id });
+
+    if (!existingPost) {
+      throw new NotFoundException('Post not found');
+    }
+
+    // Only owner or admin can update
+    const isAdmin = currentUser.roles.includes('admin');
+    if (existingPost.authorId !== currentUser.id && !isAdmin) {
+      throw new ForbiddenException('You can only update your own posts');
+    }
+
+    const post = await this.postService.updatePost({
+      where: { id },
+      data: updatePostDto,
+    });
+
+    return PostResponse.fromEntity(post);
+  }
+
+  // # Publish Post (Owner only)
+
+  @Put(':id/publish')
+  @ApiOperation({ summary: 'Publish a post' })
+  @ApiResponse({ status: 200, type: PostResponse })
+  async publishPost(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() currentUser: CurrentUserPayload,
+  ): Promise<PostResponse> {
+    const existingPost = await this.postService.post({ id });
+
+    if (!existingPost) {
+      throw new NotFoundException('Post not found');
+    }
+
+    const isAdmin = currentUser.roles.includes('admin');
+    if (existingPost.authorId !== currentUser.id && !isAdmin) {
+      throw new ForbiddenException('You can only publish your own posts');
+    }
+
+    const post = await this.postService.updatePost({
+      where: { id },
       data: { published: true },
     });
+
+    return PostResponse.fromEntity(post);
   }
 
-  @Delete('post/:id')
-  async deletePost(@Param('id') id: string): Promise<PostModel> {
-    return this.postService.deletePost({ id: Number(id) });
+  // # Delete Post (Owner or Admin)
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete a post' })
+  @ApiResponse({ status: 200, type: PostResponse })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  @ApiResponse({ status: 404, description: 'Post not found' })
+  async deletePost(
+    @Param('id', ParseIntPipe) id: number,
+    @CurrentUser() currentUser: CurrentUserPayload,
+  ): Promise<PostResponse> {
+    const existingPost = await this.postService.post({ id });
+
+    if (!existingPost) {
+      throw new NotFoundException('Post not found');
+    }
+
+    // Only owner or admin can delete
+    const isAdmin = currentUser.roles.includes('admin');
+    if (existingPost.authorId !== currentUser.id && !isAdmin) {
+      throw new ForbiddenException('You can only delete your own posts');
+    }
+
+    const post = await this.postService.deletePost({ id });
+
+    return PostResponse.fromEntity(post);
   }
 }

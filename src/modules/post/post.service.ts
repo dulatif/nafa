@@ -11,6 +11,7 @@ export class PostsService {
   ): Promise<Post | null> {
     return this.prisma.post.findUnique({
       where: postWhereUniqueInput,
+      include: { author: true },
     });
   }
 
@@ -28,12 +29,18 @@ export class PostsService {
       cursor,
       where,
       orderBy,
+      include: { author: true },
     });
+  }
+
+  async count(where?: Prisma.PostWhereInput): Promise<number> {
+    return this.prisma.post.count({ where });
   }
 
   async createPost(data: Prisma.PostCreateInput): Promise<Post> {
     return this.prisma.post.create({
       data,
+      include: { author: true },
     });
   }
 
@@ -45,12 +52,14 @@ export class PostsService {
     return this.prisma.post.update({
       data,
       where,
+      include: { author: true },
     });
   }
 
   async deletePost(where: Prisma.PostWhereUniqueInput): Promise<Post> {
     return this.prisma.post.delete({
       where,
+      include: { author: true },
     });
   }
 }
